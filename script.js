@@ -95,8 +95,14 @@ const getGraphEdges = (graph) => {
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
-// If one reachable vertex has a degree of one, move to it
+// Maybe Implement: If one reachable vertex has a degree of one, move to it
+// let lowestSize = Infinity;
 const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
+  // if (graph.size < lowestSize) {
+  //   lowestSize = graph.size;
+  //   console.log(lowestSize);
+  // }
+
   const edges = removeNode(pos, graph);
   moves.push(pos);
 
@@ -109,24 +115,30 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   let lowestDegreeCount = Infinity;
   let totalEdges = 0;
   const bestMoves = new Set();
-  const depth = 1;
+  // Why is depth 0 so slow??
+  const depth = 0;
   for (const edge of edges) {
     const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
       edge,
-      graph,
-      depth
+      graph
+      // depth
     );
-    if (minDegree == Infinity && minDegreeCount == Infinity && countEdges == Infinity) {
+    if (
+      minDegree == Infinity &&
+      minDegreeCount == Infinity &&
+      countEdges == Infinity
+    ) {
       bestMoves.clear();
       bestMoves.add(edge);
       break;
     }
-    if (minDegree > 0 &&
+    if (
+      minDegree > 0 &&
       (minDegree > lowestDegree ||
-      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
-      (minDegree === lowestDegree &&
-        minDegreeCount === lowestDegreeCount &&
-        countEdges > totalEdges))
+        (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
+        (minDegree === lowestDegree &&
+          minDegreeCount === lowestDegreeCount &&
+          countEdges > totalEdges))
     ) {
       lowestDegree = minDegree;
       lowestDegreeCount = minDegreeCount;
@@ -153,17 +165,17 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
   const graphClone = lodash.cloneDeep(graph);
   const edges = removeNode(pos, graphClone);
   if (graphClone.size === 0) {
-    return [Infinity, Infinity, Infinity]
-  } 
-  
+    return [Infinity, Infinity, Infinity];
+  }
+
   if (edges.size === 0) {
     return [0, Infinity, 0];
   }
-  
+
   if (depth === 0) {
     const result = getGraphEdges(graph);
     return result;
-  } 
+  }
 
   let lowestDegree = 0;
   let lowestDegreeCount = Infinity;
@@ -174,7 +186,11 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
       graphClone,
       depth - 1
     );
-    if (minDegree == Infinity && minDegreeCount == Infinity && countEdges == Infinity) {
+    if (
+      minDegree == Infinity &&
+      minDegreeCount == Infinity &&
+      countEdges == Infinity
+    ) {
       return [Infinity, Infinity, Infinity];
     }
     if (
@@ -193,14 +209,33 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
-const start = performance.now();
-const result = knightMoves("51");
-if (result) { 
-  const end = performance.now();
-  console.log(result[0]);
-  displayBoard(result[1]);  
-  console.log(`Execution time: ${end - start} ms`);
-} else {
-  "Error!";
-}
+const test = () => {
+  let max = 0;
+  for (let i = 0; i < 7; i++) {
+    for (let j = 0; j < 7; j++) {
+      const start = performance.now();
+      const result = knightMoves(`${i}${j}`);
+      if (result) {
+        const end = performance.now();
+        const difference = end - start;
+        if (difference > max) max = difference;
+      } else {
+        console.log("Error");
+        return;
+      }
+    }
+  }
+  console.log(`Max time: ${max} ms`);
+};
 
+test();
+// const start = performance.now();
+// const result = knightMoves("33");
+// if (result) {
+//   const end = performance.now();
+//   console.log(result[0]);
+//   displayBoard(result[1]);
+//   console.log(`Execution time: ${end - start} ms`);
+// } else {
+//   ("Error!");
+// }
