@@ -1,33 +1,34 @@
-const lodash = require("./node_modules/lodash");
+const lodash = require("../node_modules/lodash");
+// import lodash from "lodash";
 
-const displayBoard = (moves) => {
-  const array = [];
-  for (let i = 0; i <= 7; i++) {
-    array.push([]);
-    for (let j = 0; j <= 7; j++) {
-      array[i][j] = ".";
-    }
-  }
+// const displayBoard = (moves) => {
+//   const array = [];
+//   for (let i = 0; i <= 7; i += 1) {
+//     array.push([]);
+//     for (let j = 0; j <= 7; j += 1) {
+//       array[i][j] = ".";
+//     }
+//   }
 
-  for (let i = 0; i < moves.length; i++) {
-    if (i === moves.length - 1) {
-      array[7 - moves[i][1]][moves[i][0]] = "X";
-    } else {
-      array[7 - moves[i][1]][moves[i][0]] = "O";
-    }
-  }
+//   for (let i = 0; i < moves.length; i += 1) {
+//     if (i === moves.length - 1) {
+//       array[7 - moves[i][1]][moves[i][0]] = "X";
+//     } else {
+//       array[7 - moves[i][1]][moves[i][0]] = "O";
+//     }
+//   }
 
-  for (let i = 0; i <= 7; i++) {
-    string = "";
-    for (let j = 0; j <= 7; j++) {
-      string += `${array[i][j]}  `;
-    }
-    console.log(string);
-  }
-};
+//   for (let i = 0; i <= 7; i += 1) {
+//     let string = "";
+//     for (let j = 0; j <= 7; j += 1) {
+//       string += `${array[i][j]}  `;
+//     }
+//     console.log(string);
+//   }
+// };
 
 const getAllPossibleMoves = (pos) => {
-  const position = pos.split("").map((item) => parseInt(item));
+  const position = pos.split("").map((item) => parseInt(item, 10));
   const set = new Set();
   const moveKnight = (start, x, y) => {
     const newPosition = [start[0] + x, start[1] + y];
@@ -51,25 +52,18 @@ const getAllPossibleMoves = (pos) => {
   return set;
 };
 
-const boardGraph = () => {
-  const graph = {};
-  for (let i = 0; i <= 7; i++) {
-    for (let j = 0; j <= 7; j++) {
-      graph[`${i}${j}`] = {};
-    }
-  }
-  return graph;
-};
-
 const initializeGraph = () => {
-  const graph = boardGraph();
-  for (const position in graph) {
-    graph[position] = getAllPossibleMoves(position);
+  const graph = {};
+  for (let i = 0; i <= 7; i += 1) {
+    for (let j = 0; j <= 7; j += 1) {
+      graph[`${i}${j}`] = getAllPossibleMoves(`${i}${j}`);
+    }
   }
   return { size: 64, graph };
 };
 
 const removeNode = (pos, graph) => {
+  // const graphClone = lodash.cloneDeep(graph);
   const edges = graph.graph[pos];
   for (const edge of edges) {
     const neighbourEdges = graph.graph[edge];
@@ -144,14 +138,14 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
       countEdges === totalEdges
     ) {
       bestMoves.add(edge);
-    } 
+    }
   }
 
   for (const move of bestMoves) {
     const result = knightMoves(
       move,
       lodash.cloneDeep(graph),
-      lodash.cloneDeep(moves)
+      lodash.cloneDeep(moves),
     );
     if (result) return result;
   }
@@ -180,7 +174,7 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
     const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
       edge,
       graphClone,
-      depth - 1
+      depth - 1,
     );
     if (
       minDegree == Infinity &&
