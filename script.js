@@ -111,7 +111,7 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   const bestMoves = new Set();
   // Why does depth 1 only require 63 recursive knightMoves calls while depth 0 takes
   // forever. Seems like depth 1 never searches the wrong path.
-  // Why does depth 2 not produce the correct result?
+  // Why does depth 2 starting on [3, 3] not produce the correct result?
   for (const edge of edges) {
     const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
       edge,
