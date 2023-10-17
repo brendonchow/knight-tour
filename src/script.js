@@ -63,99 +63,37 @@ const initializeGraph = () => {
 };
 
 const removeNode = (pos, graph) => {
-  // const graphClone = lodash.cloneDeep(graph);
-  const edges = graph.graph[pos];
-  for (const edge of edges) {
-    const neighbourEdges = graph.graph[edge];
+  const graphClone = lodash.cloneDeep(graph);
+  const edges = graphClone.graph[pos];
+  edges.forEach((edge) => {
+    const neighbourEdges = graphClone.graph[edge];
     neighbourEdges.delete(pos);
-  }
-  delete graph.graph[pos];
-  graph.size -= 1;
-  return edges;
+  });
+
+  delete graphClone.graph[pos];
+  graphClone.size -= 1;
+  return [edges, graphClone];
 };
 
 const getGraphEdges = (graph) => {
   let lowestDegree = Infinity;
   let totalEdges = 0;
   let lowestDegreeCount = 0;
-  for (const vertex in graph.graph) {
+  Object.keys(graph.graph).forEach((vertex) => {
     const edges = graph.graph[vertex];
     totalEdges += edges.size;
     if (edges.size < lowestDegree) {
       lowestDegree = edges.size;
       lowestDegreeCount = 1;
-    } else if (edges.size === lowestDegree) lowestDegreeCount++;
-  }
+    } else if (edges.size === lowestDegree) lowestDegreeCount += 1;
+  });
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
-const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
-  const edges = removeNode(pos, graph);
-  moves.push(pos);
-
-  if (graph.size === 0) {
-    return moves;
-  }
-
-  if (edges.size === 0) return null;
-
-  let lowestDegree = 0;
-  let lowestDegreeCount = Infinity;
-  let totalEdges = 0;
-  const bestMoves = new Set();
-  // Why does depth 1 only require 63 recursive knightMoves calls while depth 0 takes
-  // forever. Seems like depth 1 never searches the wrong path.
-  // Why does depth 2 starting on [3, 3] not produce the correct result?
-  for (const edge of edges) {
-    const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
-      edge,
-      graph,
-    );
-    if (
-      minDegree == Infinity &&
-      minDegreeCount == Infinity &&
-      countEdges == Infinity
-    ) {
-      bestMoves.clear();
-      bestMoves.add(edge);
-      break;
-    }
-    if (
-      minDegree > lowestDegree ||
-      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
-      (minDegree === lowestDegree &&
-        minDegreeCount === lowestDegreeCount &&
-        countEdges > totalEdges)
-    ) {
-      lowestDegree = minDegree;
-      lowestDegreeCount = minDegreeCount;
-      totalEdges = countEdges;
-      bestMoves.clear();
-      bestMoves.add(edge);
-    } else if (
-      minDegree === lowestDegree &&
-      minDegreeCount === lowestDegreeCount &&
-      countEdges === totalEdges
-    ) {
-      bestMoves.add(edge);
-    }
-  }
-
-  for (const move of bestMoves) {
-    const result = knightMoves(
-      move,
-      lodash.cloneDeep(graph),
-      lodash.cloneDeep(moves),
-    );
-    if (result) return result;
-  }
-};
-
 const getOptimalMoves = (pos, graph, depth = 1) => {
-  const graphClone = lodash.cloneDeep(graph);
-  const edges = removeNode(pos, graphClone);
-  if (graphClone.size === 0) {
-    return [Infinity, Infinity, Infinity];
+  const [edges, newGraph] = removeNode(pos, graph);
+  if (newGraph.size === 0) {
+    return [Infinity, 0, Infinity];
   }
 
   if (edges.size === 0) {
@@ -170,19 +108,12 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
   let lowestDegree = 0;
   let lowestDegreeCount = Infinity;
   let totalEdges = 0;
-  for (const edge of edges) {
+  edges.forEach((edge) => {
     const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
       edge,
-      graphClone,
+      newGraph,
       depth - 1,
     );
-    if (
-      minDegree == Infinity &&
-      minDegreeCount == Infinity &&
-      countEdges == Infinity
-    ) {
-      return [Infinity, Infinity, Infinity];
-    }
     if (
       minDegree > lowestDegree ||
       (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
@@ -194,21 +125,71 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
       lowestDegreeCount = minDegreeCount;
       totalEdges = countEdges;
     }
-  }
+    return null;
+  });
 
   return [lowestDegree, lowestDegreeCount, totalEdges];
+};
+const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
+  const [edges, newGraph] = removeNode(pos, graph);
+  moves.push(pos);
+
+  if (newGraph.size === 0) {
+    return moves;
+  }
+
+  if (edges.size === 0) return null;
+
+  let lowestDegree = 0;
+  let lowestDegreeCount = Infinity;
+  let totalEdges = 0;
+  let bestMoves = [];
+  // Why does depth 1 only require 63 recursive knightMoves calls while depth 0 takes
+  // forever. Seems like depth 1 never searches the wrong path.
+  // Why does depth 2 starting on [3, 3] not produce the correct result?
+  edges.forEach((edge) => {
+    const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
+      edge,
+      newGraph,
+    );
+    if (
+      minDegree > lowestDegree ||
+      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
+      (minDegree === lowestDegree &&
+        minDegreeCount === lowestDegreeCount &&
+        countEdges > totalEdges)
+    ) {
+      lowestDegree = minDegree;
+      lowestDegreeCount = minDegreeCount;
+      totalEdges = countEdges;
+      bestMoves = [];
+      bestMoves.push(edge);
+    } else if (
+      minDegree === lowestDegree &&
+      minDegreeCount === lowestDegreeCount &&
+      countEdges === totalEdges
+    ) {
+      bestMoves.push(edge);
+    }
+  });
+
+  for (let i = 0; i < bestMoves.length; i += 1) {
+    const result = knightMoves(bestMoves[i], newGraph, lodash.cloneDeep(moves));
+    if (result) return result;
+  }
+  return null;
 };
 
 // TESTS
 let count = 0;
 const test = () => {
   let max = 0;
-  for (let i = 0; i <= 7; i++) {
-    for (let j = 0; j <= 7; j++) {
+  for (let i = 0; i <= 7; i += 1) {
+    for (let j = 0; j <= 7; j += 1) {
       const start = performance.now();
       const result = knightMoves(`${i}${j}`);
       if (result) {
-        count++;
+        count += 1;
         const end = performance.now();
         const difference = end - start;
         if (difference > max) max = difference;
