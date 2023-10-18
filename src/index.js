@@ -3,6 +3,8 @@ import "./style.css";
 import Display from "./display";
 import Board from "./board";
 
+// Todo: Next and Previous buttons automatically pause tour.
+
 const squares = document.querySelectorAll(".square");
 const startTourButton = document.querySelector(".start");
 const restartButton = document.querySelector(".restart");
@@ -156,10 +158,10 @@ const navigateWithNextButton = () => {
 nextButton.addEventListener("click", () => {
   if (Board.getInitial() && index === 1) {
     moves = Board.startTour();
-  } else if (!paused || index >= 64) return;
+  } else if (index >= 64) return;
+  navigateWithNextButton();
   moveKnight(moves[index]);
   index += 1;
-  navigateWithNextButton();
 
   if (index === 64) finishTour();
 });
@@ -171,10 +173,10 @@ const unMoveKnight = () => {
 };
 
 previousButton.addEventListener("click", () => {
-  if (!paused || index <= 1) return;
+  if (index <= 1) return;
+  navigateWithNextButton();
   unMoveKnight();
   index -= 1;
-  navigateWithNextButton();
 });
 
 clickRandom();
