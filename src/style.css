@@ -29,16 +29,22 @@ body {
   height: 100vh;
   aspect-ratio: 1;
   display: grid;
+  grid-auto-rows: 1fr;
+  user-select: none;
 }
 
 .board-row {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  outline: 5px solid white;
+}
+
+.square {
+  display: grid;
+  background-color: rgb(240, 217, 181);
 }
 
 .black {
-  background-color: black;
+  background-color: rgb(181, 136, 99);
 }
 
 .user {
@@ -95,4 +101,12 @@ button:active {
 
 .navigate-buttons button {
   flex: 1 1 0;
+}
+
+.knight-icon {
+  height: 100%;
+}
+
+.visited {
+  filter: brightness(25%);
 }

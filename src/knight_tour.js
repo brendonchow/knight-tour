@@ -104,16 +104,16 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
 
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
+
 const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   const [edges, newGraph] = removeNode(pos, graph);
-  moves.push(pos);
-
+  const newMoves = lodash.cloneDeep(moves);
+  newMoves.push(pos);
   if (newGraph.size === 0) {
-    return moves;
+    return newMoves;
   }
 
   if (edges.size === 0) return null;
-
   let lowestDegree = 0;
   let lowestDegreeCount = Infinity;
   let totalEdges = 0;
@@ -147,38 +147,33 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
     }
   });
 
+  // const promises = [];
   for (let i = 0; i < bestMoves.length; i += 1) {
-    const result = knightMoves(bestMoves[i], newGraph, lodash.cloneDeep(moves));
+    const result = knightMoves(
+      bestMoves[i],
+      newGraph,
+      lodash.cloneDeep(newMoves),
+    );
     if (result) return result;
+    // promises.push(result);
   }
+
+  // return Promise.any(promises);
   return null;
 };
 
+export default knightMoves;
+
 // TESTS
-// let count = 0;
 // const test = () => {
-//   let max = 0;
 //   for (let i = 0; i <= 7; i += 1) {
 //     for (let j = 0; j <= 7; j += 1) {
-//       const start = performance.now();
 //       const result = knightMoves(`${i}${j}`);
-//       if (result) {
-//         count += 1;
-//         const end = performance.now();
-//         const difference = end - start;
-//         if (difference > max) max = difference;
-//       } else {
-//         console.log("Error");
-//         return;
-//       }
+//       if (result) console.log("Success");
 //     }
 //   }
-//   console.log(`Max time: ${max} ms`);
-//   console.log(`Count: ${count}`);
 // };
 // test();
-
-export default knightMoves;
 
 // const start = performance.now();
 // const result = knightMoves("33");
