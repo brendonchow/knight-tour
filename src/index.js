@@ -63,7 +63,7 @@ const restartTour = () => {
 
 const startTour = () => {
   if (!Board.initialPos || (!paused && index !== 1)) return;
-
+  unpause();
   tourOngoing = true;
   if (moves === null) moves = Board.startTour();
 
@@ -137,7 +137,6 @@ pauseButton.addEventListener("click", () => {
   if (!tourOngoing) return;
   if (paused) {
     startTour();
-    unpause();
   } else {
     pause();
   }
