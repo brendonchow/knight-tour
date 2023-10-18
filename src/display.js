@@ -9,20 +9,16 @@ let darkenPreviousSquare = null;
 const placeInitial = (square) => {
   knight.remove();
   square.appendChild(knight);
-};
-
-const restartTour = (square) => {
-  placeInitial(square);
   darkenPreviousSquare = null;
+  darkenPreviousSquare = () => square.classList.add("visited");
 };
 
 const moveKnight = (square) => {
-  placeInitial(square);
+  knight.remove();
+  square.appendChild(knight);
   if (darkenPreviousSquare) darkenPreviousSquare();
 
-  darkenPreviousSquare = () => {
-    square.classList.add("visited");
-  };
+  darkenPreviousSquare = () => square.classList.add("visited");
 };
 
 const removeVisited = (square) => {
@@ -49,7 +45,6 @@ export default {
   removeVisited,
   removeKnight,
   moveKnight,
-  restartTour,
   pause,
   unpause,
 };

@@ -104,4 +104,7 @@ export default {
   get tourStarted() {
     return tourStarted;
   },
+  set tourStarted(val) {
+    tourStarted = val;
+  },
 };
