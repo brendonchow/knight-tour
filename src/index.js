@@ -98,7 +98,7 @@ const startTour = () => {
 
 startTourButton.addEventListener("click", startTour);
 
-restartButton.addEventListener("click", () => {
+const restartAll = () => {
   if (!Board.initialPos || !Board.tourStarted) return;
 
   // restartGlobals makes paused === false
@@ -114,15 +114,19 @@ restartButton.addEventListener("click", () => {
   squares.forEach((square) => {
     Display.removeVisited(square);
   });
-});
+};
 
-randomButton.addEventListener("click", () => {
-  if (Board.tourStarted) return;
+restartButton.addEventListener("click", restartAll);
+
+const clickRandom = () => {
+  restartAll();
   const randomX = Math.floor(Math.random() * 8);
   const randomY = Math.floor(Math.random() * 8);
   const square = Board.getSquare(`${randomX}${randomY}`);
   clickSquare(square);
-});
+};
+
+randomButton.addEventListener("click", clickRandom);
 
 delayInput.addEventListener("input", (event) => {
   delay = parseFloat(event.target.value) * 1000;
@@ -172,3 +176,5 @@ previousButton.addEventListener("click", () => {
   index -= 1;
   navigateWithNextButton();
 });
+
+clickRandom();
