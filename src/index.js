@@ -151,7 +151,7 @@ const navigateWithNextButton = () => {
 
 // Be able to work even if not startTour is not pressed. Remove delay
 nextButton.addEventListener("click", () => {
-  if (index === 1) {
+  if (Board.getInitial() && index === 1) {
     moves = Board.startTour();
   } else if (!paused || index >= 64) return;
   moveKnight(moves[index]);
