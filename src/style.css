@@ -111,3 +111,8 @@ button:active {
 .visited {
   filter: brightness(25%);
 }
+
+.button-wrapper {
+  width: 100%;
+  text-align: center;
+}
