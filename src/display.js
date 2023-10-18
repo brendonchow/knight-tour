@@ -34,10 +34,22 @@ const removeKnight = () => {
   knight.remove();
 };
 
+const pause = (button) => {
+  const buttonCopy = button;
+  buttonCopy.textContent = "Continue";
+};
+
+const unpause = (button) => {
+  const buttonCopy = button;
+  buttonCopy.textContent = "Pause";
+};
+
 export default {
   placeInitial,
   removeVisited,
   removeKnight,
   moveKnight,
   restartTour,
+  pause,
+  unpause,
 };

@@ -1,6 +1,6 @@
 import KnightsTour from "./knight_tour";
 
-const BOARD_SIZE = 8;
+// const BOARD_SIZE = 8;
 
 // const setKnightTourResult = (object, pos) => {
 //   const objectCopy = object;
