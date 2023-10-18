@@ -61,7 +61,7 @@ button {
   background-color: white;
   padding: 10px 20px;
   cursor: pointer;
-  min-width: 40%;
+  min-width: 80%;
 }
 
 .title {
@@ -72,12 +72,9 @@ button {
 .buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 25px;
-
+  row-gap: 25px;
   width: 100%;
-}
-
-.buttons > button {
+  justify-items: center;
 }
 
 button:hover {
@@ -100,13 +97,11 @@ button:active {
 }
 
 .navigate-buttons {
-  display: flex;
-  gap: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 25px;
   width: 100%;
-}
-
-.navigate-buttons button {
-  flex: 1 1 0;
+  justify-items: center;
 }
 
 .knight-icon {
