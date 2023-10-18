@@ -4,9 +4,116 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./normalize.css" />
-    <link rel="stylesheet" href="./style.css" />
-    <script src="./script.js" type="module"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body></body>
+  <body>
+    <div class="user">
+      <h1 class="title">Knight's Tour</h1>
+      <h2>Click on a square on the board to place a knight!</h2>
+      <div class="buttons">
+        <button class="start">Start Tour</button>
+        <button class="pause">Pause</button>
+        <button>Place knight randomly</button>
+        <button>Clear</button>
+      </div>
+
+      <div class="delay-wrapper">
+        <label for="delay"
+          >Set delay for the knight's movement in seconds</label
+        >
+        <input type="number" class="delay" id="delay" min="0" value="0" />
+      </div>
+      <div class="navigate-buttons">
+        <button class="previous">Previous</button>
+        <button class="next">Next</button>
+      </div>
+    </div>
+    <div class="board">
+      <div class="board-row">
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+      </div>
+      <div class="board-row">
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+      </div>
+      <div class="board-row">
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+      </div>
+      <div class="board-row">
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+      </div>
+      <div class="board-row">
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+      </div>
+      <div class="board-row">
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+      </div>
+      <div class="board-row">
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+      </div>
+      <div class="board-row">
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+        <div class="square black"></div>
+        <div class="square"></div>
+      </div>
+    </div>
+  </body>
 </html>

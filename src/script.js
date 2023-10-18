@@ -1,31 +1,5 @@
-const lodash = require("../node_modules/lodash");
-// import lodash from "lodash";
-
-// const displayBoard = (moves) => {
-//   const array = [];
-//   for (let i = 0; i <= 7; i += 1) {
-//     array.push([]);
-//     for (let j = 0; j <= 7; j += 1) {
-//       array[i][j] = ".";
-//     }
-//   }
-
-//   for (let i = 0; i < moves.length; i += 1) {
-//     if (i === moves.length - 1) {
-//       array[7 - moves[i][1]][moves[i][0]] = "X";
-//     } else {
-//       array[7 - moves[i][1]][moves[i][0]] = "O";
-//     }
-//   }
-
-//   for (let i = 0; i <= 7; i += 1) {
-//     let string = "";
-//     for (let j = 0; j <= 7; j += 1) {
-//       string += `${array[i][j]}  `;
-//     }
-//     console.log(string);
-//   }
-// };
+// const lodash = require("../node_modules/lodash");
+import lodash from "lodash";
 
 const getAllPossibleMoves = (pos) => {
   const position = pos.split("").map((item) => parseInt(item, 10));
@@ -181,28 +155,30 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
 };
 
 // TESTS
-let count = 0;
-const test = () => {
-  let max = 0;
-  for (let i = 0; i <= 7; i += 1) {
-    for (let j = 0; j <= 7; j += 1) {
-      const start = performance.now();
-      const result = knightMoves(`${i}${j}`);
-      if (result) {
-        count += 1;
-        const end = performance.now();
-        const difference = end - start;
-        if (difference > max) max = difference;
-      } else {
-        console.log("Error");
-        return;
-      }
-    }
-  }
-  console.log(`Max time: ${max} ms`);
-  console.log(`Count: ${count}`);
-};
-test();
+// let count = 0;
+// const test = () => {
+//   let max = 0;
+//   for (let i = 0; i <= 7; i += 1) {
+//     for (let j = 0; j <= 7; j += 1) {
+//       const start = performance.now();
+//       const result = knightMoves(`${i}${j}`);
+//       if (result) {
+//         count += 1;
+//         const end = performance.now();
+//         const difference = end - start;
+//         if (difference > max) max = difference;
+//       } else {
+//         console.log("Error");
+//         return;
+//       }
+//     }
+//   }
+//   console.log(`Max time: ${max} ms`);
+//   console.log(`Count: ${count}`);
+// };
+// test();
+
+export default knightMoves;
 
 // const start = performance.now();
 // const result = knightMoves("33");

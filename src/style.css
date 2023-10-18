@@ -1,7 +1,8 @@
 html {
   box-sizing: border-box;
-  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+  font-family: Roboto, system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: white;
 }
 
 *,
@@ -16,4 +17,82 @@ html {
 h1 {
   /* To override Normalize.css h1 margin */
   margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template-columns: auto max-content;
+  overflow: hidden;
+}
+
+.board {
+  height: 100vh;
+  aspect-ratio: 1;
+  display: grid;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  outline: 5px solid white;
+}
+
+.black {
+  background-color: black;
+}
+
+.user {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 50px;
+  display: grid;
+  align-content: start;
+  gap: 50px;
+  justify-items: center;
+}
+
+button {
+  background-color: white;
+  padding: 10px 20px;
+  max-width: 250px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 50px;
+  text-align: center;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(50% - 25px), 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+button:hover {
+  filter: brightness(90%);
+}
+button:active {
+  filter: brightness(80%);
+}
+
+.delay-wrapper {
+  font-size: 20px;
+  text-align: center;
+}
+
+.delay {
+  padding: 5px 10px;
+  margin-top: 25px;
+}
+
+.navigate-buttons {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+}
+
+.navigate-buttons button {
+  flex: 1 1 0;
 }
