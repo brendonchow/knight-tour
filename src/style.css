@@ -50,7 +50,7 @@ body {
 .user {
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
-  padding: 50px;
+  padding: 2vw;
   display: grid;
   align-content: start;
   gap: 50px;
