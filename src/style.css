@@ -60,8 +60,8 @@ body {
 button {
   background-color: white;
   padding: 10px 20px;
-  max-width: 250px;
   cursor: pointer;
+  min-width: 40%;
 }
 
 .title {
@@ -71,9 +71,13 @@ button {
 
 .buttons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(50% - 25px), 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 25px;
+
   width: 100%;
+}
+
+.buttons > button {
 }
 
 button:hover {
@@ -84,6 +88,8 @@ button:active {
 }
 
 .delay-wrapper {
+  display: grid;
+  justify-items: center;
   font-size: 20px;
   text-align: center;
 }
