@@ -105,6 +105,10 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
+// Why does depth 1 only require 63 recursive knightMoves calls while depth 0 takes
+// forever. Seems like depth 1 never searches the wrong path.
+// Why does depth 2 starting on [3, 3] not produce the correct result?
+
 const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   const [edges, newGraph] = removeNode(pos, graph);
   const newMoves = lodash.cloneDeep(moves);
@@ -118,9 +122,7 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   let lowestDegreeCount = Infinity;
   let totalEdges = 0;
   let bestMoves = [];
-  // Why does depth 1 only require 63 recursive knightMoves calls while depth 0 takes
-  // forever. Seems like depth 1 never searches the wrong path.
-  // Why does depth 2 starting on [3, 3] not produce the correct result?
+
   edges.forEach((edge) => {
     const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
       edge,
@@ -147,7 +149,6 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
     }
   });
 
-  // const promises = [];
   for (let i = 0; i < bestMoves.length; i += 1) {
     const result = knightMoves(
       bestMoves[i],
@@ -155,16 +156,14 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
       lodash.cloneDeep(newMoves),
     );
     if (result) return result;
-    // promises.push(result);
   }
 
-  // return Promise.any(promises);
   return null;
 };
 
 export default knightMoves;
 
-// TESTS
+// TESTING
 // const test = () => {
 //   for (let i = 0; i <= 7; i += 1) {
 //     for (let j = 0; j <= 7; j += 1) {
@@ -174,14 +173,3 @@ export default knightMoves;
 //   }
 // };
 // test();
-
-// const start = performance.now();
-// const result = knightMoves("33");
-// if (result) {
-//   const end = performance.now();
-//   console.log(result);
-//   displayBoard(result);
-//   console.log(`Execution time: ${end - start} ms`);
-// } else {
-//   console.log("Error!");
-// }

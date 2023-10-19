@@ -3,8 +3,6 @@ import "./style.css";
 import Display from "./display";
 import Board from "./board";
 
-// Todo: Next and Previous buttons automatically pause tour.
-
 const squares = document.querySelectorAll(".square");
 const startTourButton = document.querySelector(".start");
 const restartButton = document.querySelector(".restart");
@@ -13,20 +11,57 @@ const delayInput = document.querySelector(".delay");
 const pauseButton = document.querySelector(".pause");
 const previousButton = document.querySelector(".previous");
 const nextButton = document.querySelector(".next");
-// Press start to start tour. Once start, can only place new knight after clear.
-// Press pause to pause tour
-// Be able to pause and go back and forth
+
 let delay = 0;
 let paused = false;
+let tourStarted = false;
 let tourOngoing = false;
 let restart = false;
 let moves = null;
 let index = 1;
-// let clickedNext = false;
+
+const unpause = () => {
+  paused = false;
+  Display.unpause(pauseButton);
+};
+
+const pause = () => {
+  paused = true;
+  Display.pause(pauseButton);
+};
+
+const finishTour = () => {
+  tourOngoing = false;
+  restart = false;
+  unpause();
+};
+
+const restartTour = () => {
+  finishTour();
+  moves = null;
+  index = 1;
+  tourStarted = false;
+};
+
+const restartAll = () => {
+  if (!Board.initialPos || !tourStarted) return;
+
+  if (paused || !tourOngoing) {
+    restartTour();
+  } else {
+    restartTour();
+    restart = true;
+  }
+
+  Display.placeInitial(Board.getSquare(Board.initialPos));
+  squares.forEach((square) => {
+    Display.removeVisited(square);
+  });
+};
 
 Board.initializeBoard(squares);
 const clickSquare = (square) => {
-  if (Board.tourStarted) return;
+  restartAll();
   Board.placeInitial(square.getAttribute("pos"));
   Display.placeInitial(square);
 };
@@ -42,31 +77,13 @@ const moveKnight = (pos) => {
   Display.moveKnight(square);
 };
 
-const unpause = () => {
-  paused = false;
-  Display.unpause(pauseButton);
-};
-
-// let pauseOnMove = null;
-
-const finishTour = () => {
-  tourOngoing = false;
-  // pauseOnMove = null;
-  restart = false;
-};
-
-const restartTour = () => {
-  finishTour();
-  moves = null;
-  index = 1;
-  unpause();
-  // clickedNext = false;
-};
-
 const startTour = () => {
   if (!Board.initialPos || (!paused && index !== 1)) return;
+
   unpause();
+  tourStarted = true;
   tourOngoing = true;
+
   if (moves === null) moves = Board.startTour();
 
   const delayMove = () => {
@@ -78,15 +95,10 @@ const startTour = () => {
 
       if (index === 64) {
         finishTour();
-        paused = true;
         return;
       }
 
-      // if (paused && clickedNext) {
-      //   clickedNext = false;
-      // }
       if (paused) {
-        // pauseOnMove = delayMove;
         return;
       }
 
@@ -98,25 +110,11 @@ const startTour = () => {
   delayMove();
 };
 
-startTourButton.addEventListener("click", startTour);
-
-const restartAll = () => {
-  if (!Board.initialPos || !Board.tourStarted) return;
-
-  // restartGlobals makes paused === false
-  if (paused || !tourOngoing) {
-    restartTour();
-  } else {
-    restartTour();
-    restart = true;
-  }
-
-  Display.placeInitial(Board.getSquare(Board.initialPos));
-  Board.restartTour();
-  squares.forEach((square) => {
-    Display.removeVisited(square);
-  });
-};
+// Maybe pressing Start Tour while not paused makes index = 1 and restarts the tour.
+startTourButton.addEventListener("click", () => {
+  restartAll();
+  startTour();
+});
 
 restartButton.addEventListener("click", restartAll);
 
@@ -134,11 +132,6 @@ delayInput.addEventListener("input", (event) => {
   delay = parseFloat(event.target.value) * 1000;
 });
 
-const pause = () => {
-  paused = true;
-  Display.pause(pauseButton);
-};
-
 pauseButton.addEventListener("click", () => {
   if (!tourOngoing) return;
   if (paused) {
@@ -149,17 +142,17 @@ pauseButton.addEventListener("click", () => {
 });
 
 const navigateWithNextButton = () => {
-  Board.tourStarted = true;
+  tourStarted = true;
   pause();
   tourOngoing = true;
 };
 
-// Be able to work even if not startTour is not pressed. Remove delay
 nextButton.addEventListener("click", () => {
   if (Board.getInitial() && index === 1) {
     moves = Board.startTour();
   } else if (index >= 64) return;
   navigateWithNextButton();
+
   moveKnight(moves[index]);
   index += 1;
 
@@ -177,6 +170,11 @@ previousButton.addEventListener("click", () => {
   navigateWithNextButton();
   unMoveKnight();
   index -= 1;
+  if (index === 1) {
+    unpause();
+    tourStarted = false;
+    tourOngoing = false;
+  }
 });
 
 clickRandom();
