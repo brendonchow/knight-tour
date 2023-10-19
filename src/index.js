@@ -19,6 +19,7 @@ let tourOngoing = false;
 let restart = false;
 let moves = null;
 let index = 1;
+let pausedOnMove = null;
 
 const unpause = () => {
   paused = false;
@@ -87,7 +88,7 @@ const startTour = () => {
   if (moves === null) moves = Board.startTour();
 
   const delayMove = () => {
-    setTimeout(() => {
+    const move = () => {
       if (restart) {
         restart = false;
         return;
@@ -99,13 +100,16 @@ const startTour = () => {
       }
 
       if (paused) {
+        pausedOnMove = move;
         return;
       }
 
       moveKnight(moves[index]);
       index += 1;
       delayMove();
-    }, delay);
+    };
+
+    setTimeout(move, delay);
   };
   delayMove();
 };
@@ -142,7 +146,12 @@ delayInput.addEventListener("input", (event) => {
 pauseButton.addEventListener("click", () => {
   if (!tourOngoing) return;
   if (paused) {
-    startTour();
+    setTimeout(() => {
+      unpause();
+      tourStarted = true;
+      tourOngoing = true;
+      pausedOnMove();
+    }, delay);
   } else {
     pause();
   }
