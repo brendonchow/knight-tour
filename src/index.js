@@ -112,7 +112,14 @@ const startTour = () => {
 
 // Maybe pressing Start Tour while not paused makes index = 1 and restarts the tour.
 startTourButton.addEventListener("click", () => {
-  restartAll();
+  if (tourStarted) {
+    const movesCopy = moves;
+    restartAll();
+    moves = movesCopy;
+  } else {
+    restartAll();
+  }
+
   startTour();
 });
 

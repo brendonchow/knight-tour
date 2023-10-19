@@ -96,14 +96,6 @@ button:active {
   margin-top: 25px;
 }
 
-.navigate-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 25px;
-  width: 100%;
-  justify-items: center;
-}
-
 .knight-icon {
   height: 100%;
 }
