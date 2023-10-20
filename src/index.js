@@ -12,6 +12,9 @@ const pauseButton = document.querySelector(".pause");
 const previousButton = document.querySelector(".previous");
 const nextButton = document.querySelector(".next");
 
+// Add dialog when tour finishes
+// Add sound when knight moves
+
 let delay = 0;
 let paused = false;
 let tourStarted = false;
@@ -19,7 +22,6 @@ let tourOngoing = false;
 let restart = false;
 let moves = null;
 let index = 1;
-let pausedOnMove = null;
 
 const unpause = () => {
   paused = false;
@@ -87,39 +89,40 @@ const moveKnight = (pos) => {
   Display.moveKnight(square);
 };
 
+let count = 0;
+const delayMove = async () => {
+  try {
+    await new Promise((resolve, reject) => {
+      count += 1;
+      const current = count;
+      setTimeout(() => {
+        if (count === current) resolve();
+        else reject();
+      }, delay);
+    });
+  } catch {
+    return;
+  }
+
+  if (restart) {
+    restart = false;
+  } else if (index === 64) {
+    finishTour();
+  } else if (!paused) {
+    moveKnight(moves[index]);
+    index += 1;
+    delayMove();
+  }
+};
+
 const startTour = () => {
-  if (!Board.initialPos || (!paused && index !== 1)) return;
+  if (!Board.initialPos) return;
 
   unpause();
   tourStarted = true;
   tourOngoing = true;
 
   if (moves === null) moves = Board.startTour();
-
-  const delayMove = () => {
-    const move = () => {
-      if (restart) {
-        restart = false;
-        return;
-      }
-
-      if (index === 64) {
-        finishTour();
-        return;
-      }
-
-      if (paused) {
-        pausedOnMove = move;
-        return;
-      }
-
-      moveKnight(moves[index]);
-      index += 1;
-      delayMove();
-    };
-
-    setTimeout(move, delay);
-  };
   delayMove();
 };
 
@@ -152,29 +155,13 @@ delayInput.addEventListener("input", (event) => {
   delay = parseFloat(event.target.value) * 1000;
 });
 
-pauseButton.addEventListener("click", () => {
-  if (!tourOngoing) return;
-  if (paused) {
-    if (pausedOnMove) {
-      setTimeout(() => {
-        unpause();
-        tourStarted = true;
-        tourOngoing = true;
-        pausedOnMove();
-      }, delay);
-    } else startTour();
-  } else {
-    pause();
-  }
-});
-
 const navigateWithNextButton = () => {
   tourStarted = true;
   pause();
   tourOngoing = true;
 };
 
-nextButton.addEventListener("click", () => {
+const clickNext = () => {
   if (Board.getInitial() && index === 1) {
     moves = Board.startTour();
   } else if (index >= 64) return;
@@ -184,7 +171,18 @@ nextButton.addEventListener("click", () => {
   index += 1;
 
   if (index === 64) finishTour();
+};
+
+pauseButton.addEventListener("click", () => {
+  if (!tourOngoing) return;
+  if (paused) {
+    startTour();
+  } else {
+    pause();
+  }
 });
+
+nextButton.addEventListener("click", clickNext);
 
 const unMoveKnight = () => {
   const square = Board.getSquare(moves[index - 2]);
