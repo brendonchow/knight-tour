@@ -3,6 +3,7 @@ import knightIcon from "./images/chess-knight.svg";
 const knight = new Image();
 knight.src = knightIcon;
 knight.addEventListener("click", (event) => event.stopPropagation());
+knight.draggable = true;
 
 let darkenPreviousSquare = null;
 

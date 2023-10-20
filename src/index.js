@@ -67,11 +67,20 @@ const clickSquare = (square) => {
   Display.placeInitial(square);
 };
 
-const clickSquareEvent = (event) => {
-  clickSquare(event.target);
-};
+const clickSquareEvent = (event) => clickSquare(event.target);
 
-squares.forEach((square) => square.addEventListener("click", clickSquareEvent));
+squares.forEach((square) => {
+  square.addEventListener("click", clickSquareEvent);
+
+  const preventDefault = (event) => event.preventDefault();
+  square.addEventListener("dragover", preventDefault);
+
+  const dropKnight = (event) => {
+    event.preventDefault();
+    clickSquareEvent(event);
+  };
+  square.addEventListener("drop", dropKnight);
+});
 
 const moveKnight = (pos) => {
   const square = Board.getSquare(pos);

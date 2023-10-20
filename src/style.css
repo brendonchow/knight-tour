@@ -23,6 +23,7 @@ body {
   display: grid;
   grid-template-columns: auto max-content;
   overflow: hidden;
+  user-select: none;
 }
 
 .board {
@@ -30,7 +31,6 @@ body {
   aspect-ratio: 1;
   display: grid;
   grid-auto-rows: 1fr;
-  user-select: none;
 }
 
 .board-row {
