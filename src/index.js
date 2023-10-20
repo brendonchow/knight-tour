@@ -19,9 +19,9 @@ let delay = 0;
 let paused = false;
 let tourStarted = false;
 let tourOngoing = false;
-let restart = false;
 let moves = null;
 let index = 1;
+let count = 0;
 
 const unpause = () => {
   paused = false;
@@ -35,7 +35,6 @@ const pause = () => {
 
 const finishTour = () => {
   tourOngoing = false;
-  restart = false;
   unpause();
 };
 
@@ -49,12 +48,8 @@ const restartTour = () => {
 const restartAll = () => {
   if (!Board.initialPos || !tourStarted) return;
 
-  if (paused || !tourOngoing) {
-    restartTour();
-  } else {
-    restartTour();
-    restart = true;
-  }
+  restartTour();
+  count += 1;
 
   Display.placeInitial(Board.getSquare(Board.initialPos));
   squares.forEach((square) => {
@@ -89,7 +84,6 @@ const moveKnight = (pos) => {
   Display.moveKnight(square);
 };
 
-let count = 0;
 const delayMove = async () => {
   try {
     await new Promise((resolve, reject) => {
@@ -104,9 +98,7 @@ const delayMove = async () => {
     return;
   }
 
-  if (restart) {
-    restart = false;
-  } else if (index === 64) {
+  if (index === 64) {
     finishTour();
   } else if (!paused) {
     moveKnight(moves[index]);
@@ -126,7 +118,6 @@ const startTour = () => {
   delayMove();
 };
 
-// Maybe pressing Start Tour while not paused makes index = 1 and restarts the tour.
 startTourButton.addEventListener("click", () => {
   if (tourStarted) {
     const movesCopy = moves;
@@ -199,6 +190,8 @@ previousButton.addEventListener("click", () => {
     unpause();
     tourStarted = false;
     tourOngoing = false;
+    // To reject promise in delayMove
+    count += 1;
   }
 });
 
