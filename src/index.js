@@ -86,27 +86,43 @@ const moveKnight = (pos) => {
   Display.moveKnight(square);
 };
 
-const delayMove = async () => {
-  try {
-    await new Promise((resolve, reject) => {
-      count += 1;
-      const current = count;
-      setTimeout(() => {
-        if (count === current) resolve();
-        else reject();
-      }, delay);
-    });
-  } catch {
-    return;
-  }
+// const delayMove = async () => {
+//   try {
+//     await new Promise((resolve, reject) => {
+//       count += 1;
+//       const current = count;
+//       setTimeout(() => {
+//         if (count === current) resolve();
+//         else reject();
+//       }, delay);
+//     });
+//   } catch {
+//     return;
+//   }
 
-  if (index === 64) {
-    finishTour();
-  } else {
-    moveKnight(moves[index]);
-    index += 1;
-    delayMove();
-  }
+//   if (index === 64) {
+//     finishTour();
+//   } else {
+//     moveKnight(moves[index]);
+//     index += 1;
+//     delayMove();
+//   }
+// };
+
+const delayMove = () => {
+  count += 1;
+  const current = count;
+  const move = () => {
+    if (current !== count) return;
+    if (index === 64) {
+      finishTour();
+    } else {
+      moveKnight(moves[index]);
+      index += 1;
+      delayMove();
+    }
+  };
+  setTimeout(move, delay);
 };
 
 const startTour = () => {
