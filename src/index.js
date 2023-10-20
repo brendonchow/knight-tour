@@ -146,12 +146,14 @@ delayInput.addEventListener("input", (event) => {
 pauseButton.addEventListener("click", () => {
   if (!tourOngoing) return;
   if (paused) {
-    setTimeout(() => {
-      unpause();
-      tourStarted = true;
-      tourOngoing = true;
-      pausedOnMove();
-    }, delay);
+    if (pausedOnMove) {
+      setTimeout(() => {
+        unpause();
+        tourStarted = true;
+        tourOngoing = true;
+        pausedOnMove();
+      }, delay);
+    } else startTour();
   } else {
     pause();
   }
