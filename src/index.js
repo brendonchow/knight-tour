@@ -25,11 +25,13 @@ let count = 0;
 
 const unpause = () => {
   paused = false;
+  count += 1;
   Display.unpause(pauseButton);
 };
 
 const pause = () => {
   paused = true;
+  count += 1;
   Display.pause(pauseButton);
 };
 
@@ -100,7 +102,7 @@ const delayMove = async () => {
 
   if (index === 64) {
     finishTour();
-  } else if (!paused) {
+  } else {
     moveKnight(moves[index]);
     index += 1;
     delayMove();
@@ -190,8 +192,6 @@ previousButton.addEventListener("click", () => {
     unpause();
     tourStarted = false;
     tourOngoing = false;
-    // To reject promise in delayMove
-    count += 1;
   }
 });
 
