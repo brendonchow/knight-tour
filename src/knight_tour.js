@@ -172,9 +172,11 @@ export default knightMoves;
 //       const end = performance.now();
 //       if (result) {
 //         const time = end - start;
-//         if (time > max) max = time
+//         if (time > max) max = time;
 //         average += time;
-//       };
+//       } else {
+//         throw Error(`Failed on ${i}${j}`);
+//       }
 //     }
 //   }
 //   console.log(`Max time taken: ${max} ms`);
