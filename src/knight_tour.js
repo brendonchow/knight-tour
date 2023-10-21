@@ -64,6 +64,8 @@ const getGraphEdges = (graph) => {
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
+// Depth should be odd number.
+
 const getOptimalMoves = (pos, graph, depth = 1) => {
   const [edges, newGraph] = removeNode(pos, graph);
   if (newGraph.size === 0) {
@@ -104,10 +106,6 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
 
   return [lowestDegree, lowestDegreeCount, totalEdges];
 };
-
-// Why does depth 1 only require 63 recursive knightMoves calls while depth 0 takes
-// forever. Seems like depth 1 never searches the wrong path.
-// Why does depth 2 starting on [3, 3] not produce the correct result?
 
 const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   const [edges, newGraph] = removeNode(pos, graph);
