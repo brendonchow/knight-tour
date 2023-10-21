@@ -20,17 +20,17 @@ let tourStarted = false;
 let tourOngoing = false;
 let moves = null;
 let movesIndex = 1;
-let count = 0;
+let delayMoveCount = 0;
 
 const unpause = () => {
   paused = false;
-  count += 1;
+  delayMoveCount += 1;
   Display.unpause(pauseButton);
 };
 
 const pause = () => {
   paused = true;
-  count += 1;
+  delayMoveCount += 1;
   Display.pause(pauseButton);
 };
 
@@ -41,7 +41,6 @@ const finishTour = () => {
 
 const restartTour = () => {
   finishTour();
-  moves = null;
   movesIndex = 1;
   tourStarted = false;
 };
@@ -50,7 +49,7 @@ const restartAll = () => {
   if (!Board.initialPos || !tourStarted) return;
 
   restartTour();
-  count += 1;
+  delayMoveCount += 1;
 
   Display.placeInitial(Board.getSquare(Board.initialPos));
   squares.forEach((square) => {
@@ -61,6 +60,7 @@ const restartAll = () => {
 Board.initializeBoard(squares);
 const clickSquare = (square) => {
   restartAll();
+  moves = null;
   Board.placeInitial(square.getAttribute("pos"));
   Display.placeInitial(square);
 };
@@ -85,36 +85,11 @@ const moveKnight = (pos) => {
   Display.moveKnight(square);
 };
 
-// With promises
-// const delayMove = async () => {
-//   try {
-//     await new Promise((resolve, reject) => {
-//       count += 1;
-//       const current = count;
-//       setTimeout(() => {
-//         if (count === current) resolve();
-//         else reject();
-//       }, delay);
-//     });
-//   } catch {
-//     return;
-//   }
-
-//   if (movesIndex === 64) {
-//     finishTour();
-//   } else {
-//     moveKnight(moves[movesIndex]);
-//     movesIndex += 1;
-//     delayMove();
-//   }
-// };
-
-// Without promises
 const delayMove = () => {
-  count += 1;
-  const current = count;
+  delayMoveCount += 1;
+  const current = delayMoveCount;
   const move = () => {
-    if (current !== count) return;
+    if (current !== delayMoveCount) return;
     if (movesIndex === 64) {
       finishTour();
     } else {
