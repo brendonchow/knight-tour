@@ -86,6 +86,7 @@ const moveKnight = (pos) => {
   Display.moveKnight(square);
 };
 
+// With promises
 // const delayMove = async () => {
 //   try {
 //     await new Promise((resolve, reject) => {
@@ -109,6 +110,7 @@ const moveKnight = (pos) => {
 //   }
 // };
 
+// Without promises
 const delayMove = () => {
   count += 1;
   const current = count;

@@ -101,7 +101,7 @@ button:active {
 }
 
 .visited {
-  filter: brightness(25%);
+  background-color: red;
 }
 
 .button-wrapper {
