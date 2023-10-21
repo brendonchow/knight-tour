@@ -1,5 +1,5 @@
-const lodash = require("../node_modules/lodash");
-// import lodash from "lodash";
+// const lodash = require("../node_modules/lodash");
+import lodash from "lodash";
 
 const getAllPossibleMoves = (pos) => {
   const position = pos.split("").map((item) => parseInt(item, 10));
@@ -51,15 +51,17 @@ const removeNode = (pos, graph) => {
 
 const getGraphEdges = (graph) => {
   let lowestDegree = Infinity;
+  let totalEdges = 0;
   let lowestDegreeCount = 0;
   Object.keys(graph.graph).forEach((vertex) => {
     const edges = graph.graph[vertex];
+    totalEdges += edges.size;
     if (edges.size < lowestDegree) {
       lowestDegree = edges.size;
       lowestDegreeCount = 1;
     } else if (edges.size === lowestDegree) lowestDegreeCount += 1;
   });
-  return [lowestDegree, lowestDegreeCount];
+  return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
 // Depth should be odd number.
@@ -81,23 +83,28 @@ const getOptimalMoves = (pos, graph, depth = 1) => {
 
   let lowestDegree = 0;
   let lowestDegreeCount = Infinity;
+  let totalEdges = 0;
   edges.forEach((edge) => {
-    const [minDegree, minDegreeCount] = getOptimalMoves(
+    const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
       edge,
       newGraph,
       depth - 1,
     );
     if (
       minDegree > lowestDegree ||
-      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount)
+      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
+      (minDegree === lowestDegree &&
+        minDegreeCount === lowestDegreeCount &&
+        countEdges > totalEdges)
     ) {
       lowestDegree = minDegree;
       lowestDegreeCount = minDegreeCount;
+      totalEdges = countEdges;
     }
     return null;
   });
 
-  return [lowestDegree, lowestDegreeCount];
+  return [lowestDegree, lowestDegreeCount, totalEdges];
 };
 
 const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
@@ -111,21 +118,30 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   if (edges.size === 0) return null;
   let lowestDegree = 0;
   let lowestDegreeCount = Infinity;
+  let totalEdges = 0;
   let bestMoves = [];
 
   edges.forEach((edge) => {
-    const [minDegree, minDegreeCount] = getOptimalMoves(edge, newGraph);
+    const [minDegree, minDegreeCount, countEdges] = getOptimalMoves(
+      edge,
+      newGraph,
+    );
     if (
       minDegree > lowestDegree ||
-      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount)
+      (minDegree === lowestDegree && minDegreeCount < lowestDegreeCount) ||
+      (minDegree === lowestDegree &&
+        minDegreeCount === lowestDegreeCount &&
+        countEdges > totalEdges)
     ) {
       lowestDegree = minDegree;
       lowestDegreeCount = minDegreeCount;
+      totalEdges = countEdges;
       bestMoves = [];
       bestMoves.push(edge);
     } else if (
       minDegree === lowestDegree &&
-      minDegreeCount === lowestDegreeCount
+      minDegreeCount === lowestDegreeCount &&
+      countEdges === totalEdges
     ) {
       bestMoves.push(edge);
     }
@@ -143,15 +159,25 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
   return null;
 };
 
-// export default knightMoves;
+export default knightMoves;
 
 // TESTING
-const test = () => {
-  for (let i = 0; i <= 7; i += 1) {
-    for (let j = 0; j <= 7; j += 1) {
-      const result = knightMoves(`${i}${j}`);
-      if (result) console.log("Success");
-    }
-  }
-};
-test();
+// const test = () => {
+//   let max = -Infinity;
+//   let average = 0;
+//   for (let i = 0; i <= 7; i += 1) {
+//     for (let j = 0; j <= 7; j += 1) {
+//       const start = performance.now();
+//       const result = knightMoves(`${i}${j}`);
+//       const end = performance.now();
+//       if (result) {
+//         const time = end - start;
+//         if (time > max) max = time
+//         average += time;
+//       };
+//     }
+//   }
+//   console.log(`Max time taken: ${max} ms`);
+//   console.log(`Average time taken: ${average / 64}`);
+// };
+// test();
