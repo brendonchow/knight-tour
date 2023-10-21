@@ -19,7 +19,7 @@ let paused = false;
 let tourStarted = false;
 let tourOngoing = false;
 let moves = null;
-let index = 1;
+let movesIndex = 1;
 let count = 0;
 
 const unpause = () => {
@@ -42,7 +42,7 @@ const finishTour = () => {
 const restartTour = () => {
   finishTour();
   moves = null;
-  index = 1;
+  movesIndex = 1;
   tourStarted = false;
 };
 
@@ -100,11 +100,11 @@ const moveKnight = (pos) => {
 //     return;
 //   }
 
-//   if (index === 64) {
+//   if (movesIndex === 64) {
 //     finishTour();
 //   } else {
-//     moveKnight(moves[index]);
-//     index += 1;
+//     moveKnight(moves[movesIndex]);
+//     movesIndex += 1;
 //     delayMove();
 //   }
 // };
@@ -115,11 +115,11 @@ const delayMove = () => {
   const current = count;
   const move = () => {
     if (current !== count) return;
-    if (index === 64) {
+    if (movesIndex === 64) {
       finishTour();
     } else {
-      moveKnight(moves[index]);
-      index += 1;
+      moveKnight(moves[movesIndex]);
+      movesIndex += 1;
       delayMove();
     }
   };
@@ -172,15 +172,15 @@ const navigateWithNextButton = () => {
 };
 
 const clickNext = () => {
-  if (Board.getInitial() && index === 1) {
+  if (Board.getInitial() && movesIndex === 1) {
     moves = Board.startTour();
-  } else if (index >= 64) return;
+  } else if (movesIndex >= 64) return;
   navigateWithNextButton();
 
-  moveKnight(moves[index]);
-  index += 1;
+  moveKnight(moves[movesIndex]);
+  movesIndex += 1;
 
-  if (index === 64) finishTour();
+  if (movesIndex === 64) finishTour();
 };
 
 pauseButton.addEventListener("click", () => {
@@ -195,17 +195,17 @@ pauseButton.addEventListener("click", () => {
 nextButton.addEventListener("click", clickNext);
 
 const unMoveKnight = () => {
-  const square = Board.getSquare(moves[index - 2]);
+  const square = Board.getSquare(moves[movesIndex - 2]);
   Display.placeInitial(square);
   Display.removeVisited(square);
 };
 
 previousButton.addEventListener("click", () => {
-  if (index <= 1) return;
+  if (movesIndex <= 1) return;
   navigateWithNextButton();
   unMoveKnight();
-  index -= 1;
-  if (index === 1) {
+  movesIndex -= 1;
+  if (movesIndex === 1) {
     unpause();
     tourStarted = false;
     tourOngoing = false;

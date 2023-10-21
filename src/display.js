@@ -1,8 +1,34 @@
 import knightIcon from "./images/chess-knight.svg";
 import moveSound from "./sound/move-self.mp3";
+import vOn from "./images/volume-high.svg";
+import vOff from "./images/volume-off.svg";
+
+const volumeDiv = document.querySelector(".volume");
 
 const moveAudio = new Audio();
+moveAudio.muted = true;
+const volumeOn = new Image();
+const volumeOff = new Image();
 moveAudio.src = moveSound;
+volumeOn.src = vOn;
+volumeOff.src = vOff;
+
+const turnVolumeOff = () => {
+  volumeOn.remove();
+  volumeDiv.appendChild(volumeOff);
+  moveAudio.muted = true;
+};
+turnVolumeOff();
+
+const turnVolumeOn = () => {
+  volumeOff.remove();
+  volumeDiv.appendChild(volumeOn);
+  moveAudio.muted = false;
+};
+
+volumeOn.addEventListener("click", turnVolumeOff);
+volumeOff.addEventListener("click", turnVolumeOn);
+
 const knight = new Image();
 knight.src = knightIcon;
 knight.addEventListener("click", (event) => event.stopPropagation());
@@ -12,7 +38,10 @@ let darkenPreviousSquare = null;
 
 const playMoveAudio = () => {
   moveAudio.currentTime = 0;
-  moveAudio.play();
+  const promise = moveAudio.play();
+  if (promise !== undefined) {
+    promise.catch(() => {});
+  }
 };
 
 const placeInitial = (square) => {
