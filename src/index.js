@@ -13,7 +13,6 @@ const previousButton = document.querySelector(".previous");
 const nextButton = document.querySelector(".next");
 
 // Add dialog when tour finishes
-// Add sound when knight moves
 
 let delay = 0;
 let paused = false;
