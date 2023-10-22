@@ -3,13 +3,13 @@ import moveSound from "./sound/move-self.mp3";
 import vOn from "./images/volume-high.svg";
 
 const volumeDiv = document.querySelector(".volume");
+const volumeOff = document.querySelector(".volume-off");
 
 const moveAudio = new Audio();
 moveAudio.muted = true;
 moveAudio.src = moveSound;
 const volumeOn = new Image();
 volumeOn.src = vOn;
-const volumeOff = document.querySelector(".volume-off");
 
 const turnVolumeOff = () => {
   volumeOn.remove();
