@@ -1,24 +1,21 @@
 import knightIcon from "./images/chess-knight.svg";
 import moveSound from "./sound/move-self.mp3";
 import vOn from "./images/volume-high.svg";
-import vOff from "./images/volume-off.svg";
 
 const volumeDiv = document.querySelector(".volume");
 
 const moveAudio = new Audio();
 moveAudio.muted = true;
-const volumeOn = new Image();
-const volumeOff = new Image();
 moveAudio.src = moveSound;
+const volumeOn = new Image();
 volumeOn.src = vOn;
-volumeOff.src = vOff;
+const volumeOff = document.querySelector(".volume-off");
 
 const turnVolumeOff = () => {
   volumeOn.remove();
   volumeDiv.appendChild(volumeOff);
   moveAudio.muted = true;
 };
-turnVolumeOff();
 
 const turnVolumeOn = () => {
   volumeOff.remove();
