@@ -137,7 +137,13 @@ const clickRandom = () => {
 randomButton.addEventListener("click", clickRandom);
 
 delayInput.addEventListener("input", (event) => {
-  delay = parseFloat(event.target.value) * 1000;
+  const value = parseFloat(event.target.value);
+  if (value > 1000) {
+    delayInput.reportValidity();
+    delay = 1000;
+  } else {
+    delay = value;
+  }
 });
 
 const navigateWithNextButton = () => {

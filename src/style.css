@@ -99,6 +99,7 @@ button:active {
 .delay {
   padding: 5px 10px;
   margin-top: 25px;
+  width: 50%;
 }
 
 .knight-icon {
