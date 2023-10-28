@@ -1,6 +1,3 @@
-// const lodash = require("../node_modules/lodash");
-import lodash from "lodash";
-
 const getAllPossibleMoves = (pos) => {
   const position = pos.split("").map((item) => parseInt(item, 10));
   const set = new Set();
@@ -37,7 +34,7 @@ const initializeGraph = () => {
 };
 
 const removeNode = (pos, graph) => {
-  const graphClone = lodash.cloneDeep(graph);
+  const graphClone = graph;
   const edges = graphClone.graph[pos];
   edges.forEach((edge) => {
     const neighbourEdges = graphClone.graph[edge];
@@ -46,43 +43,57 @@ const removeNode = (pos, graph) => {
 
   delete graphClone.graph[pos];
   graphClone.size -= 1;
-  return [edges, graphClone];
+  return edges;
+};
+
+const resetGraph = (pos, graph, edges) => {
+  const graphClone = graph;
+  graphClone.size += 1;
+  graphClone.graph[pos] = edges;
+  edges.forEach((edge) => {
+    const neighbourEdges = graphClone.graph[edge];
+    neighbourEdges.add(pos);
+  });
 };
 
 const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
-  const [edges, newGraph] = removeNode(pos, graph);
-  const newMoves = lodash.cloneDeep(moves);
-  newMoves.push(pos);
-  if (newGraph.size === 0) {
-    return newMoves;
+  const edges = removeNode(pos, graph);
+  moves.push(pos);
+  if (graph.size === 0) {
+    return moves;
   }
 
   if (edges.size === 0) {
+    resetGraph(pos, graph, edges);
     return null;
   }
 
   let bestMoves = [];
+  let minSize = Infinity;
   edges.forEach((edge) => {
+    const { size } = graph.graph[edge];
     if (bestMoves.length === 0) {
       bestMoves = [edge];
-    } else if (newGraph.graph[edge].size < newGraph.graph[bestMoves[0]].size) {
+      minSize = size;
+    } else if (size < minSize) {
       bestMoves = [edge];
-    } else if (
-      newGraph.graph[edge].size === newGraph.graph[bestMoves[0]].size
-    ) {
+      minSize = size;
+    } else if (size === minSize) {
       bestMoves.push(edge);
     }
   });
 
   for (let i = 0; i < bestMoves.length; i += 1) {
-    const result = knightMoves(bestMoves[i], newGraph, newMoves);
+    const result = knightMoves(bestMoves[i], graph, moves);
     if (result) return result;
   }
+
+  resetGraph(pos, graph, edges);
+  moves.pop();
   return null;
 };
 
 export default knightMoves;
-
 // TESTING
 // const test = () => {
 //   let max = -Infinity;
@@ -102,6 +113,6 @@ export default knightMoves;
 //     }
 //   }
 //   console.log(`Max time taken: ${max} ms`);
-//   console.log(`Average time taken: ${average / 64}`);
+//   console.log(`Average time taken: ${average / 64} ms`);
 // };
 // test();
