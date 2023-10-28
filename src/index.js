@@ -75,7 +75,7 @@ squares.forEach((square) => {
 
   const dropKnight = (event) => {
     event.preventDefault();
-    clickSquareEvent(event);
+    clickSquare(square);
   };
   square.addEventListener("drop", dropKnight);
 });
