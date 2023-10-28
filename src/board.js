@@ -38,7 +38,17 @@ const clear = () => {
   resetInitial();
 };
 
-const startTour = () => KnightsTour(startingPos);
+const calculated = {};
+const startTour = () => {
+  const getMoves = calculated[startingPos];
+  if (getMoves) {
+    return getMoves;
+  }
+
+  const moves = KnightsTour(startingPos);
+  calculated[startingPos] = moves;
+  return moves;
+};
 export default {
   placeInitial,
   startTour,
