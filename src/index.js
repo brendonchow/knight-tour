@@ -153,10 +153,8 @@ const navigateWithNextButton = () => {
 };
 
 const clickNext = () => {
-  if (Board.getInitial() && movesIndex === 1) {
-    moves = Board.startTour();
-  } else if (movesIndex >= 64) return;
-  navigateWithNextButton();
+  if (movesIndex >= 64 || !Board.getInitial()) return;
+  if (movesIndex === 1) moves = Board.startTour();
 
   moveKnight(moves[movesIndex]);
   movesIndex += 1;
@@ -182,7 +180,7 @@ const unMoveKnight = () => {
 };
 
 previousButton.addEventListener("click", () => {
-  if (movesIndex <= 1) return;
+  if (movesIndex <= 1 || !Board.getInitial()) return;
   navigateWithNextButton();
   unMoveKnight();
   movesIndex -= 1;
