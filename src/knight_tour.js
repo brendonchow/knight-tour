@@ -65,6 +65,7 @@ const knightMoves = (pos, graph = initializeGraph(), moves = []) => {
 
   if (edges.size === 0) {
     resetGraph(pos, graph, edges);
+    moves.pop();
     return null;
   }
 
@@ -104,11 +105,23 @@ export default knightMoves;
 //       const result = knightMoves(`${i}${j}`);
 //       const end = performance.now();
 //       if (result) {
+//         if (result.length !== 64)
+//           throw Error(`Failed on ${i}${j}. Route has too many moves.`);
+//         const graph = initializeGraph();
+//         result.forEach((pos) => {
+//           if (!graph.graph[pos]) {
+//             throw Error(`Failed on ${i}${j}. Square visited more than once.`);
+//           }
+//           delete graph.graph[pos];
+//         });
+//         Object.keys(graph.graph).forEach(() => {
+//           throw Error(`Failed on ${i}${j}. Not all squares visited.`);
+//         });
 //         const time = end - start;
 //         if (time > max) max = time;
 //         average += time;
 //       } else {
-//         throw Error(`Failed on ${i}${j}`);
+//         throw Error(`Failed on ${i}${j}. Could not find a route.`);
 //       }
 //     }
 //   }
