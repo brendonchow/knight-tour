@@ -4,12 +4,21 @@ import vOn from "./images/volume-high.svg";
 
 const volumeDiv = document.querySelector(".volume");
 const volumeOff = document.querySelector(".volume-off");
+const dialogTourEnd = document.querySelector(".tour-end");
 
 const moveAudio = new Audio();
 moveAudio.muted = true;
 moveAudio.src = moveSound;
 const volumeOn = new Image();
 volumeOn.src = vOn;
+
+const openDialogTourEnd = () => {
+  dialogTourEnd.show();
+};
+
+const closeDialogTourEnd = () => {
+  dialogTourEnd.close();
+};
 
 const turnVolumeOff = () => {
   volumeOn.remove();
@@ -84,4 +93,6 @@ export default {
   moveKnight,
   pause,
   unpause,
+  openDialogTourEnd,
+  closeDialogTourEnd,
 };

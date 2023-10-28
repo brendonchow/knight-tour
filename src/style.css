@@ -36,6 +36,7 @@ body {
   aspect-ratio: 1;
   display: grid;
   grid-auto-rows: 1fr;
+  position: relative;
 }
 
 .board-row {
@@ -139,4 +140,18 @@ button:active {
 .volume > img:active {
   filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(36deg)
     brightness(80%) contrast(101%);
+}
+
+.tour-end[open] {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  font-size: calc(28px + 0.1vw);
+  color: rgb(20, 20, 20);
+}
+
+.tour-end > h1 {
+  font-weight: 1000;
 }

@@ -12,8 +12,6 @@ const pauseButton = document.querySelector(".pause");
 const previousButton = document.querySelector(".previous");
 const nextButton = document.querySelector(".next");
 
-// Add dialog when tour finishes
-
 let delay = 0;
 let paused = false;
 let tourStarted = false;
@@ -31,10 +29,17 @@ const pause = () => {
   paused = true;
   delayMoveCount += 1;
   Display.pause(pauseButton);
+  Display.closeDialogTourEnd();
+};
+
+const finishTour = () => {
+  Display.openDialogTourEnd();
+  unpause();
 };
 
 const restartTour = () => {
   unpause();
+  Display.closeDialogTourEnd();
   movesIndex = 1;
   moves = null;
   tourStarted = false;
@@ -84,7 +89,7 @@ const delayMove = () => {
   const move = () => {
     if (current !== delayMoveCount) return;
     if (movesIndex === 64) {
-      unpause();
+      finishTour();
     } else {
       moveKnight(moves[movesIndex]);
       movesIndex += 1;
@@ -107,7 +112,7 @@ const clickNext = () => {
   movesIndex += 1;
 
   if (movesIndex === 64) {
-    unpause();
+    finishTour();
     return false;
   }
   return true;
