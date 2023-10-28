@@ -33,12 +33,8 @@ const pause = () => {
   Display.pause(pauseButton);
 };
 
-const finishTour = () => {
-  unpause();
-};
-
 const restartTour = () => {
-  finishTour();
+  unpause();
   movesIndex = 1;
   moves = null;
   tourStarted = false;
@@ -88,7 +84,7 @@ const delayMove = () => {
   const move = () => {
     if (current !== delayMoveCount) return;
     if (movesIndex === 64) {
-      finishTour();
+      unpause();
     } else {
       moveKnight(moves[movesIndex]);
       movesIndex += 1;
@@ -111,7 +107,7 @@ const clickNext = () => {
   movesIndex += 1;
 
   if (movesIndex === 64) {
-    finishTour();
+    unpause();
     return false;
   }
   return true;
