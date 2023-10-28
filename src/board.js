@@ -28,8 +28,6 @@ const placeInitial = (pos) => {
   return true;
 };
 
-const getInitial = () => startingPos;
-
 const resetInitial = () => {
   startingPos = null;
 };
@@ -54,7 +52,6 @@ export default {
   startTour,
   initializeBoard,
   getSquare,
-  getInitial,
   resetInitial,
   clear,
   get initialPos() {

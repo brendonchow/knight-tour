@@ -17,7 +17,6 @@ const nextButton = document.querySelector(".next");
 let delay = 0;
 let paused = false;
 let tourStarted = false;
-let tourOngoing = false;
 let moves = null;
 let movesIndex = 1;
 let delayMoveCount = 0;
@@ -35,13 +34,13 @@ const pause = () => {
 };
 
 const finishTour = () => {
-  tourOngoing = false;
   unpause();
 };
 
 const restartTour = () => {
   finishTour();
   movesIndex = 1;
+  moves = null;
   tourStarted = false;
 };
 
@@ -49,7 +48,6 @@ const restartAll = () => {
   if (!Board.initialPos || !tourStarted) return;
 
   restartTour();
-  delayMoveCount += 1;
 
   Display.placeInitial(Board.getSquare(Board.initialPos));
   squares.forEach((square) => {
@@ -60,7 +58,6 @@ const restartAll = () => {
 Board.initializeBoard(squares);
 const clickSquare = (square) => {
   restartAll();
-  moves = null;
   Board.placeInitial(square.getAttribute("pos"));
   Display.placeInitial(square);
 };
@@ -101,23 +98,36 @@ const delayMove = () => {
   setTimeout(move, delay);
 };
 
+const navigateWithNextButton = () => {
+  tourStarted = true;
+  pause();
+};
+
+const clickNext = () => {
+  if (movesIndex >= 64 || !Board.initialPos) return false;
+  if (moves === null) moves = Board.startTour();
+  navigateWithNextButton();
+  moveKnight(moves[movesIndex]);
+  movesIndex += 1;
+
+  if (movesIndex === 64) {
+    finishTour();
+    return false;
+  }
+  return true;
+};
+
 const startTour = () => {
   if (!Board.initialPos) return;
 
   unpause();
   tourStarted = true;
-  tourOngoing = true;
 
-  if (moves === null) moves = Board.startTour();
-  delayMove();
+  if (clickNext()) delayMove();
 };
 
 startTourButton.addEventListener("click", () => {
   if (tourStarted) {
-    const movesCopy = moves;
-    restartAll();
-    moves = movesCopy;
-  } else {
     restartAll();
   }
 
@@ -146,24 +156,8 @@ delayInput.addEventListener("input", (event) => {
   }
 });
 
-const navigateWithNextButton = () => {
-  tourStarted = true;
-  pause();
-  tourOngoing = true;
-};
-
-const clickNext = () => {
-  if (movesIndex >= 64 || !Board.getInitial()) return;
-  if (movesIndex === 1) moves = Board.startTour();
-
-  moveKnight(moves[movesIndex]);
-  movesIndex += 1;
-
-  if (movesIndex === 64) finishTour();
-};
-
 pauseButton.addEventListener("click", () => {
-  if (!tourOngoing) return;
+  if (movesIndex <= 1 || movesIndex >= 64) return;
   if (paused) {
     startTour();
   } else {
@@ -180,14 +174,12 @@ const unMoveKnight = () => {
 };
 
 previousButton.addEventListener("click", () => {
-  if (movesIndex <= 1 || !Board.getInitial()) return;
+  if (movesIndex <= 1 || !Board.initialPos) return;
   navigateWithNextButton();
   unMoveKnight();
   movesIndex -= 1;
   if (movesIndex === 1) {
-    unpause();
-    tourStarted = false;
-    tourOngoing = false;
+    restartTour();
   }
 });
 
