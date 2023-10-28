@@ -118,12 +118,9 @@ const clickNext = () => {
 };
 
 const startTour = () => {
-  if (!Board.initialPos) return;
-
+  if (!clickNext()) return;
   unpause();
-  tourStarted = true;
-
-  if (clickNext()) delayMove();
+  delayMove();
 };
 
 startTourButton.addEventListener("click", () => {
