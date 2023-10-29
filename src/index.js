@@ -87,12 +87,13 @@ const delayMove = () => {
   delayMoveCount += 1;
   const current = delayMoveCount;
   const move = () => {
+    console.log(move);
     if (current !== delayMoveCount) return;
-    if (movesIndex === 64) {
+    moveKnight(moves[movesIndex]);
+    movesIndex += 1;
+    if (movesIndex >= 64) {
       finishTour();
     } else {
-      moveKnight(moves[movesIndex]);
-      movesIndex += 1;
       delayMove();
     }
   };
