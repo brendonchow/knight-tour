@@ -150,6 +150,11 @@ button:active {
   background-color: transparent;
   font-size: calc(28px + 0.1vw);
   color: rgb(20, 20, 20);
+  pointer-events: none;
+}
+
+.tour-end:focus {
+  outline: none;
 }
 
 .tour-end > h1 {

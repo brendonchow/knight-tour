@@ -12,8 +12,6 @@ moveAudio.src = moveSound;
 const volumeOn = new Image();
 volumeOn.src = vOn;
 
-dialogTourEnd.addEventListener("focus", (event) => event.preventDefault());
-
 const openDialogTourEnd = () => {
   dialogTourEnd.show();
 };
