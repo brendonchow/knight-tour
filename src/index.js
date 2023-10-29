@@ -30,6 +30,7 @@ const pause = () => {
   currentMove = null;
   Display.pause(pauseButton);
   Display.closeDialogTourEnd();
+  tourStarted = true;
 };
 
 const finishTour = () => {
@@ -100,15 +101,10 @@ const delayMove = () => {
   setTimeout(move, delay);
 };
 
-const navigateWithNextButton = () => {
-  tourStarted = true;
-  pause();
-};
-
 const clickNext = () => {
   if (movesIndex >= 64 || !Board.initialPos) return false;
   if (moves === null) moves = Board.startTour();
-  navigateWithNextButton();
+  pause();
   moveKnight(moves[movesIndex]);
   movesIndex += 1;
 
@@ -182,7 +178,7 @@ const unMoveKnight = () => {
 
 previousButton.addEventListener("click", () => {
   if (movesIndex <= 1 || !Board.initialPos) return;
-  navigateWithNextButton();
+  pause();
   unMoveKnight();
   movesIndex -= 1;
   if (movesIndex === 1) {
