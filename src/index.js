@@ -17,17 +17,17 @@ let paused = false;
 let tourStarted = false;
 let moves = null;
 let movesIndex = 1;
-let delayMoveCount = 0;
+let currentMove;
 
 const unpause = () => {
   paused = false;
-  delayMoveCount += 1;
+  currentMove = null;
   Display.unpause(pauseButton);
 };
 
 const pause = () => {
   paused = true;
-  delayMoveCount += 1;
+  currentMove = null;
   Display.pause(pauseButton);
   Display.closeDialogTourEnd();
 };
@@ -84,11 +84,10 @@ const moveKnight = (pos) => {
 };
 
 const delayMove = () => {
-  delayMoveCount += 1;
-  const current = delayMoveCount;
   const move = () => {
-    console.log(move);
-    if (current !== delayMoveCount) return;
+    if (currentMove !== move) {
+      return;
+    }
     moveKnight(moves[movesIndex]);
     movesIndex += 1;
     if (movesIndex >= 64) {
@@ -97,6 +96,7 @@ const delayMove = () => {
       delayMove();
     }
   };
+  currentMove = move;
   setTimeout(move, delay);
 };
 
