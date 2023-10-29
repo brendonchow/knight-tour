@@ -137,10 +137,18 @@ restartButton.addEventListener("click", restartAll);
 
 const clickRandom = () => {
   restartAll();
-  const randomX = Math.floor(Math.random() * 8);
-  const randomY = Math.floor(Math.random() * 8);
-  const square = Board.getSquare(`${randomX}${randomY}`);
-  clickSquare(square);
+  let randomX = Math.floor(Math.random() * 8);
+  let randomY = Math.floor(Math.random() * 8);
+
+  const initial = Board.initialPos;
+  if (initial) {
+    const [x, y] = initial.split("").map((item) => Number(item));
+    while (randomX === x && randomY === y) {
+      randomX = Math.floor(Math.random() * 8);
+      randomY = Math.floor(Math.random() * 8);
+    }
+  }
+  clickSquare(Board.getSquare(`${randomX}${randomY}`));
 };
 
 randomButton.addEventListener("click", clickRandom);
