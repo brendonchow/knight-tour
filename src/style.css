@@ -64,10 +64,13 @@ body {
   position: relative;
 }
 
+button:not([disabled]) {
+  cursor: pointer;
+}
+
 button {
   background-color: white;
   padding: 10px 20px;
-  cursor: pointer;
   width: calc(100% - 5vw);
 }
 
@@ -84,10 +87,10 @@ button {
   justify-items: center;
 }
 
-button:hover {
+button:hover:not([disabled]) {
   filter: brightness(var(--hover-brightness));
 }
-button:active {
+button:active:not([disabled]) {
   filter: brightness(var(--active-brightness));
 }
 

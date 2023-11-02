@@ -31,11 +31,17 @@ const pause = () => {
   Display.pause(pauseButton);
   Display.closeDialogTourEnd();
   tourStarted = true;
+  restartButton.disabled = false;
+  previousButton.disabled = false;
+  nextButton.disabled = false;
+  pauseButton.disabled = false;
 };
 
 const finishTour = () => {
   Display.openDialogTourEnd();
   unpause();
+  nextButton.disabled = true;
+  pauseButton.disabled = true;
 };
 
 const restartTour = () => {
@@ -44,6 +50,10 @@ const restartTour = () => {
   movesIndex = 1;
   moves = null;
   tourStarted = false;
+  previousButton.disabled = true;
+  restartButton.disabled = true;
+  nextButton.disabled = false;
+  pauseButton.disabled = true;
 };
 
 const restartAll = () => {
@@ -101,6 +111,7 @@ const delayMove = () => {
   setTimeout(move, delay);
 };
 
+// Returns false if next move should not happen else true
 const clickNext = () => {
   if (movesIndex >= 64 || !Board.initialPos) return false;
   if (moves === null) moves = Board.startTour();
@@ -187,3 +198,15 @@ previousButton.addEventListener("click", () => {
 });
 
 clickRandom();
+
+// Index === 1
+// yes no
+// no yes
+// no yes
+
+// Mid: All yes
+
+// Index === 64
+// yes yes
+// no yes
+// yes no
