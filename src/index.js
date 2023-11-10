@@ -12,7 +12,7 @@ const pauseButton = document.querySelector(".pause");
 const previousButton = document.querySelector(".previous");
 const nextButton = document.querySelector(".next");
 
-let delay = 0;
+let delay = 1000;
 let paused = false;
 let tourStarted = false;
 let moves = null;
@@ -198,15 +198,3 @@ previousButton.addEventListener("click", () => {
 });
 
 clickRandom();
-
-// Index === 1
-// yes no
-// no yes
-// no yes
-
-// Mid: All yes
-
-// Index === 64
-// yes yes
-// no yes
-// yes no
