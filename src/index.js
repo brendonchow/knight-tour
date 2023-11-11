@@ -12,7 +12,7 @@ const pauseButton = document.querySelector(".pause");
 const previousButton = document.querySelector(".previous");
 const nextButton = document.querySelector(".next");
 
-let delay = 1000;
+let delay = parseInt(delayInput.value, 10);
 let paused = false;
 let tourStarted = false;
 let moves = null;
