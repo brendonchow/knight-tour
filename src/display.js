@@ -11,13 +11,20 @@ moveAudio.muted = true;
 moveAudio.src = moveSound;
 const volumeOn = new Image();
 volumeOn.src = vOn;
+const knight = new Image();
+knight.src = knightIcon;
+knight.addEventListener("click", (event) => event.stopPropagation());
+knight.draggable = true;
+
+let darkenPreviousSquare = null;
 
 const openDialogTourEnd = () => {
   dialogTourEnd.show();
+  knight.style.opacity = "0.2";
 };
-
 const closeDialogTourEnd = () => {
   dialogTourEnd.close();
+  knight.style.opacity = "";
 };
 
 const turnVolumeOff = () => {
@@ -34,13 +41,6 @@ const turnVolumeOn = () => {
 
 volumeOn.addEventListener("click", turnVolumeOff);
 volumeOff.addEventListener("click", turnVolumeOn);
-
-const knight = new Image();
-knight.src = knightIcon;
-knight.addEventListener("click", (event) => event.stopPropagation());
-knight.draggable = true;
-
-let darkenPreviousSquare = null;
 
 const playMoveAudio = () => {
   moveAudio.currentTime = 0;
