@@ -11,8 +11,12 @@ moveAudio.muted = true;
 moveAudio.src = moveSound;
 const volumeOn = new Image();
 volumeOn.src = vOn;
+
 const knight = new Image();
 knight.src = knightIcon;
+knight.alt = "Knight Icon";
+knight.style.width = "90px";
+knight.style.height = "90px";
 knight.addEventListener("click", (event) => event.stopPropagation());
 knight.draggable = true;
 
