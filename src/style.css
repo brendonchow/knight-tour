@@ -158,3 +158,8 @@ button:active:not([disabled]) {
 .tour-end > h1 {
   font-weight: 1000;
 }
+
+.description {
+  text-align: center;
+  line-height: 2rem;
+}
